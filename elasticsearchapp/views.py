@@ -15,13 +15,13 @@ def index(request):
 
 @api_view(['GET'])
 def setup(request):
-    # try:
-    if not isExistIndex("diseases"):
-        if Disease.objects.count() ==  0:
-            loadJSON('data/dataPenyakit.json')
-        bulkIndexing()
-    # except:
-    #     return Response("Something Wrogn!", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    try:
+        if not isExistIndex("diseases"):
+            if Disease.objects.count() ==  0:
+                loadJSON('elasticsearchapp/data/dataPenyakit.json')
+            bulkIndexing()
+    except:
+        return Response("Something Wrogn!", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     return Response("Setup ready!", status=status.HTTP_200_OK)
 
