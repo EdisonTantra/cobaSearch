@@ -5,6 +5,7 @@ from elasticsearch import Elasticsearch
 from . import models
 
 connections.create_connection()
+es = Elasticsearch()
 
 class DiseaseIndex(DocType):
     diseaseName = Text()
@@ -20,8 +21,7 @@ class DiseaseIndex(DocType):
     updateddAt = Date()
 
 def isExistIndex(indexName):
-    es = Elasticsearch()
-    if es.indices.exists(index="index"):
+    if es.indices.exists(index=indexName):
         return True
     return False
 
@@ -32,15 +32,14 @@ def bulkIndexing():
     bulk(client=es, actions=(element.indexing() for element in models.Disease.objects.all().iterator()))
 
 def search(symptoms):
-    query1 = Q("multi_match", query=symptoms,fields=["diseaseName^2", "diseaseOverview"])
+    query1 = Q("multi_match", query=symptoms,fields=["diseaseName^2", "diseaseSearchName^2", "diseaseOverview"])
     query2 = Q("match", diseaseCausesEffect=symptoms)
-    query3 = Q("match", diseaseSearchName=symptoms)
-    query4 = Q("match", diseaseCallDoctor=symptoms)
-    query5 = Q("match", diseasePrevention=symptoms)
-    # query6 = Q("bool", should=[query2, query3, query4, query5])
-    queryFinal = query1 | query2 | query3 | query4 | query5
+    query3 = Q("match", diseaseCallDoctor=symptoms)
+    query4 = Q("match", diseasePrevention=symptoms)
+    query5 = Q("bool", filter=[query2, query3, query4])
+    queryFinal = query1 | query5
 
-    s = Search(using=client, index='diseases')
+    s = Search(using=es, index='diseases')
     s = s.query(queryFinal)
     response = s.execute()
     for hit in s:
