@@ -37,17 +37,26 @@ Diseases search based on symptoms in Bahasa with elasticsearch and django.
 
 ## Check everthing is good :
  **Method**|  GET  
+<<<<<<< HEAD
  --------- | ---------
+=======
+>>>>>>> 72f958504a25885f3604b0856e6f2644dfeb665b
   **URL**  |  *localhost:8000/api/*
 
 ## Setup:
  **Method**|  GET  
+<<<<<<< HEAD
  --------- | ---------
+=======
+>>>>>>> 72f958504a25885f3604b0856e6f2644dfeb665b
   **URL**  |  *localhost:8000/api/setup*
 
 ## Search:
  **Method**  | POST  
+<<<<<<< HEAD
  ----------- | -----------
+=======
+>>>>>>> 72f958504a25885f3604b0856e6f2644dfeb665b
   **URL**    |  *localhost:8000/api/search* 
  **Header**  | Content-Type : application/json,  X-CSRFToken : csrfToken
   **Data**   | symptom1, symptom2, symptom3
